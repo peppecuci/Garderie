@@ -1,5 +1,6 @@
 package be.digitalcity.giuseppe.demospringwithalexandre.mapper;
 
+import be.digitalcity.giuseppe.demospringwithalexandre.forms.EnfantInsertForm;
 import be.digitalcity.giuseppe.demospringwithalexandre.model.dto.EnfantDTO;
 import be.digitalcity.giuseppe.demospringwithalexandre.model.entities.Enfant;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,20 @@ public class EnfantMapper {
                 .allergies((entity.getAllergies()))
                 .propre(entity.isPropre() ? "propre" : "non-propre" )
                 .build();
+    }
+
+    public Enfant toEntity(EnfantInsertForm form){
+
+        if(form == null)
+            return null;
+
+        Enfant enfant = new Enfant();
+        enfant.setFirstName(form.getFirstName());
+        enfant.setLastName(form.getLastName());
+        enfant.setDateDeNaissance(form.getDateDeNaissance());
+        enfant.setPropre(form.isPropre());
+
+        return enfant;
     }
 
 }
