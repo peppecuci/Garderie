@@ -10,7 +10,12 @@ import java.util.List;
 public class EnfantServiceMock implements EnfantService {
 
     @Override
-    public Enfant save(Enfant T) {
+    public Enfant create(Enfant toInsert) {
+        return null;
+    }
+
+    @Override
+    public Enfant update(Long id, Enfant toUpdate) {
         return null;
     }
 

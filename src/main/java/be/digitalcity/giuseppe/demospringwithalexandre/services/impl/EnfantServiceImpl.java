@@ -21,11 +21,29 @@ public class EnfantServiceImpl implements EnfantService {
 
 
     @Override
-    public Enfant save(Enfant enfant) {
+    public Enfant create(Enfant toInsert) {
 
-        if(enfant == null)
-            throw  new IllegalArgumentException("Enfant ne devrait pas etre null");
-        return repository.save(enfant);
+        if(toInsert == null)
+            throw new IllegalArgumentException("inserted child cannot be null");
+
+        toInsert.setId(0L);
+
+        return repository.save(toInsert);
+
+    }
+
+    @Override
+    public Enfant update(Long id, Enfant toUpdate) {
+
+        if(toUpdate == null || id == null)
+            throw new IllegalArgumentException("params cannot be null");
+
+        if(!repository.existsById(id))
+            throw new EntityNotFoundException();
+
+        toUpdate.setId(id);
+
+        return repository.save(toUpdate);
 
     }
 

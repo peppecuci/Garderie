@@ -19,10 +19,10 @@ public class Enfant extends Personne {
     private LocalDate dateDeNaissance;
     private boolean propre;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> allergies;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tutorat", joinColumns = @JoinColumn(name = "enfant°id"),
     inverseJoinColumns = @JoinColumn(name = "tuteur_id"))
     private Set<Tuteur> tuteurs;
