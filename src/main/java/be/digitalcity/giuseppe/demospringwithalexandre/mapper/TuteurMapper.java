@@ -1,55 +1,51 @@
 package be.digitalcity.giuseppe.demospringwithalexandre.mapper;
 
-import be.digitalcity.giuseppe.demospringwithalexandre.forms.EnfantInsertForm;
-import be.digitalcity.giuseppe.demospringwithalexandre.forms.TuteurInsertForm;
-import be.digitalcity.giuseppe.demospringwithalexandre.forms.TuteurUpdateForm;
+import be.digitalcity.giuseppe.demospringwithalexandre.forms.TuteurForm;
 import be.digitalcity.giuseppe.demospringwithalexandre.model.dto.TuteurDTO;
-import be.digitalcity.giuseppe.demospringwithalexandre.model.entities.Enfant;
 import be.digitalcity.giuseppe.demospringwithalexandre.model.entities.Tuteur;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Component
 public class TuteurMapper {
+
 
     public TuteurDTO toDto(Tuteur entity){
 
         if(entity == null)
             return null;
 
+        Set<TuteurDTO.EnfantDTO> enfants = new HashSet<>();
+        if(entity.getEnfants() != null)
+            entity.getEnfants().stream().map(TuteurDTO.EnfantDTO::fromEntity).forEach(enfants::add);
+
         return TuteurDTO.builder()
                 .id(entity.getId())
-                .enfants(entity.getEnfants())
+                .firstName(entity.getFirstName())
+                .lastName(entity.getLastName())
+                .numTel(entity.getNumTel())
+                .adresse(entity.getAdresse())
+                .enfants(enfants)
                 .build();
     }
 
     //Cette methode definie le FORM à utiliser quand on insert un Tuteur dans la DB
-    public Tuteur toEntity(TuteurInsertForm form){
+    public Tuteur toEntity(TuteurForm form){
 
         if(form == null)
             return null;
 
-        Tuteur tuteur = new Tuteur();
-        tuteur.setNumTel(form.getNumTel());
-        tuteur.setAdresse(form.getAdresse());
-        tuteur.setEnfants(form.getEnfants());
+        Tuteur entity = new Tuteur();
+        entity.setFirstName(form.getFirstName());
+        entity.setLastName(form.getLastName());
+        entity.setNumTel(form.getNumTel());
+        entity.setAdresse(form.getAdresse());
 
-        return tuteur;
+        return entity;
     }
 
-    //Methode qui definie le FORM à utiliser quand on update un Tuteur dans la DB
-    public Tuteur toEntity(TuteurUpdateForm form){
 
-        if(form == null)
-            return null;
-
-        Tuteur tuteur = new Tuteur();
-        tuteur.setFirstName(form.getFirstName());
-        tuteur.setLastName(form.getLastName());
-        tuteur.setNumTel(form.getNumTel());
-        tuteur.setAdresse(form.getAdresse());
-
-        return tuteur;
-
-    }
 
 }

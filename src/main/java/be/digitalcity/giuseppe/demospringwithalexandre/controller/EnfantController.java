@@ -1,13 +1,15 @@
 package be.digitalcity.giuseppe.demospringwithalexandre.controller;
 
 import be.digitalcity.giuseppe.demospringwithalexandre.forms.EnfantUpdateForm;
+import be.digitalcity.giuseppe.demospringwithalexandre.forms.TuteurForm;
 import be.digitalcity.giuseppe.demospringwithalexandre.mapper.EnfantMapper;
 import be.digitalcity.giuseppe.demospringwithalexandre.model.dto.EnfantDTO;
 import be.digitalcity.giuseppe.demospringwithalexandre.model.entities.Enfant;
+import be.digitalcity.giuseppe.demospringwithalexandre.model.entities.Tuteur;
 import be.digitalcity.giuseppe.demospringwithalexandre.services.EnfantService;
+import be.digitalcity.giuseppe.demospringwithalexandre.services.TuteurService;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.PostUpdate;
 import java.util.List;
 import java.util.Set;
 
@@ -15,8 +17,10 @@ import java.util.Set;
 @RestController
 public class EnfantController {
 
-    private EnfantService service;
-    private EnfantMapper mapper;
+    private final EnfantService service;
+    private final EnfantMapper mapper;
+    private TuteurService tuteurService;
+    private TuteurForm tuteurForm;
 
 
 
@@ -34,8 +38,8 @@ public class EnfantController {
 
     //INSERT
     @PostMapping
-    public EnfantDTO insert(@RequestBody Enfant enfantToInsert){
-        return mapper.toDto(service.create(enfantToInsert));
+    public EnfantDTO insert(@RequestBody EnfantUpdateForm enfantToInsert){
+        return mapper.toDto(service.create(mapper.toEntity(enfantToInsert)));
     }
 
     //GET ALL
@@ -57,7 +61,8 @@ public class EnfantController {
     public EnfantDTO update(@PathVariable long id, @RequestBody EnfantUpdateForm form){
 
         Enfant entity = mapper.toEntity(form);
-        entity.setId(id);
+        Set<Tuteur> tuteurs = tuteurService.getAllById(form.getTuteursId());
+        entity.setTuteurs(tuteurs);
         return mapper.toDto(service.update(id, entity));
 
     }

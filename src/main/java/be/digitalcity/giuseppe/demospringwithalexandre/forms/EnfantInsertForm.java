@@ -8,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 
@@ -20,5 +21,6 @@ public class EnfantInsertForm {
     @PastOrPresent
     private LocalDate dateDeNaissance;
     private boolean propre;
+    private Set<Long> setTuteursId;
 
 }

@@ -2,6 +2,7 @@ package be.digitalcity.giuseppe.demospringwithalexandre.forms;
 
 import be.digitalcity.giuseppe.demospringwithalexandre.model.dto.TuteurDTO;
 import be.digitalcity.giuseppe.demospringwithalexandre.model.entities.Enfant;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;

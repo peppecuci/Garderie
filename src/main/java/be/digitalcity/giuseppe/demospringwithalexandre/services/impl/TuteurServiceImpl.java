@@ -1,6 +1,7 @@
 package be.digitalcity.giuseppe.demospringwithalexandre.services.impl;
 
 
+import be.digitalcity.giuseppe.demospringwithalexandre.ElementNotFoundException;
 import be.digitalcity.giuseppe.demospringwithalexandre.model.entities.Tuteur;
 import be.digitalcity.giuseppe.demospringwithalexandre.repositories.TuteurRepository;
 import be.digitalcity.giuseppe.demospringwithalexandre.services.TuteurService;
@@ -8,7 +9,10 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Primary
@@ -26,7 +30,7 @@ public class TuteurServiceImpl implements TuteurService {
         if(toInsert == null)
             throw new IllegalArgumentException("Tuteur cannot be null");
 
-            toInsert.setId(0L);
+        toInsert.setId(0L);
 
         return repository.save(toInsert);
     }
@@ -38,7 +42,7 @@ public class TuteurServiceImpl implements TuteurService {
             throw new IllegalArgumentException("No paramether can be null");
 
         if(!repository.existsById(id))
-            throw new EntityNotFoundException();
+            throw new ElementNotFoundException(Tuteur.class, id);
 
         toUpdate.setId(id);
 
@@ -48,6 +52,9 @@ public class TuteurServiceImpl implements TuteurService {
 
     @Override
     public Tuteur getOne(long id) {
+        if(!repository.existsById(id))
+            throw new ElementNotFoundException(Tuteur.class, id);
+
         return repository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
@@ -58,8 +65,20 @@ public class TuteurServiceImpl implements TuteurService {
 
     @Override
     public Tuteur delete(Long id) {
+
+        if(!repository.existsById(id))
+            throw new ElementNotFoundException(Tuteur.class, id);
+
         Tuteur tuteur = getOne(id);
         repository.delete(tuteur);
         return tuteur;
+
+    }
+
+    @Override
+    public Set<Tuteur> getAllById(Collection<Long> ids) {
+
+        return new HashSet<>(repository.findAllById(ids));
+
     }
 }
