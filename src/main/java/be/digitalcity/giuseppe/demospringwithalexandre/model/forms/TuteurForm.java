@@ -1,4 +1,4 @@
-package be.digitalcity.giuseppe.demospringwithalexandre.forms;
+package be.digitalcity.giuseppe.demospringwithalexandre.model.forms;
 
 import lombok.Data;
 

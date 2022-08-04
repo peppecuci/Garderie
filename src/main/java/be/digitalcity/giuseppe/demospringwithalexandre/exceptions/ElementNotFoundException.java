@@ -1,9 +1,10 @@
-package be.digitalcity.giuseppe.demospringwithalexandre;
+package be.digitalcity.giuseppe.demospringwithalexandre.exceptions;
 
 public class ElementNotFoundException extends RuntimeException{
 
     private final Class<?> clazz;
     private final Object forId;
+
 
     public ElementNotFoundException(Class<?> clazz, Object forId) {
         this.clazz = clazz;
@@ -16,11 +17,6 @@ public class ElementNotFoundException extends RuntimeException{
         this.forId = forId;
     }
 
-    public ElementNotFoundException(String message, Throwable cause, Class<?> clazz, Object forId) {
-        super(message, cause);
-        this.clazz = clazz;
-        this.forId = forId;
-    }
 
     public Class<?> getClazz() {
         return clazz;

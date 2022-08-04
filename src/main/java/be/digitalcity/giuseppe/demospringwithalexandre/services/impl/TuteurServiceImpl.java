@@ -1,21 +1,23 @@
 package be.digitalcity.giuseppe.demospringwithalexandre.services.impl;
 
 
-import be.digitalcity.giuseppe.demospringwithalexandre.ElementNotFoundException;
+import be.digitalcity.giuseppe.demospringwithalexandre.exceptions.ElementNotFoundException;
+import be.digitalcity.giuseppe.demospringwithalexandre.exceptions.TuteurNotDeletableException;
+import be.digitalcity.giuseppe.demospringwithalexandre.exceptions.TuteurNotExistingException;
+import be.digitalcity.giuseppe.demospringwithalexandre.model.entities.Enfant;
 import be.digitalcity.giuseppe.demospringwithalexandre.model.entities.Tuteur;
 import be.digitalcity.giuseppe.demospringwithalexandre.repositories.TuteurRepository;
 import be.digitalcity.giuseppe.demospringwithalexandre.services.TuteurService;
-import org.springframework.context.annotation.Primary;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
-@Primary
 public class TuteurServiceImpl implements TuteurService {
 
     private final TuteurRepository repository;
@@ -26,36 +28,32 @@ public class TuteurServiceImpl implements TuteurService {
 
     @Override
     public Tuteur create(Tuteur toInsert) {
+        if( toInsert == null )
+            throw new IllegalArgumentException("parameter 0 cannot be null");
 
-        if(toInsert == null)
-            throw new IllegalArgumentException("Tuteur cannot be null");
-
-        toInsert.setId(0L);
-
+        toInsert.setId(null);
         return repository.save(toInsert);
     }
 
     @Override
     public Tuteur update(Long id, Tuteur toUpdate) {
+        if( toUpdate == null || id == null )
+            throw new IllegalArgumentException("parameters cannot be null");
 
-        if(toUpdate == null || id == null)
-            throw new IllegalArgumentException("No paramether can be null");
-
-        if(!repository.existsById(id))
+        if( !repository.existsById(id) )
             throw new ElementNotFoundException(Tuteur.class, id);
 
         toUpdate.setId(id);
-
-        return repository.save(toUpdate);
-
+        return repository.save( toUpdate );
     }
 
     @Override
-    public Tuteur getOne(long id) {
-        if(!repository.existsById(id))
-            throw new ElementNotFoundException(Tuteur.class, id);
+    public Tuteur getOne(Long id) {
+        if( id == null )
+            throw new IllegalArgumentException("id cannot be null");
 
-        return repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return repository.findById(id)
+                .orElseThrow( () -> new ElementNotFoundException(Tuteur.class, id) );
     }
 
     @Override
@@ -70,15 +68,33 @@ public class TuteurServiceImpl implements TuteurService {
             throw new ElementNotFoundException(Tuteur.class, id);
 
         Tuteur tuteur = getOne(id);
-        repository.delete(tuteur);
+
+        try{
+            repository.delete(tuteur);
+        }
+        catch (DataIntegrityViolationException ex){
+            throw new TuteurNotDeletableException();
+        }
+
         return tuteur;
 
     }
 
+
     @Override
-    public Set<Tuteur> getAllById(Collection<Long> ids) {
+    public Set<Tuteur> getAllById(Collection<Long> ids){
 
-        return new HashSet<>(repository.findAllById(ids));
+        List<Tuteur> listToCompare = repository.findAllById(ids);
 
+
+        if( ids.size() == listToCompare.size() )
+            return new HashSet<>( listToCompare );
+        else
+            throw new TuteurNotExistingException();
+    }
+
+    @Override
+    public Enfant updateTuteurs(Long id, Set<Tuteur> tuteurs) {
+        return null;
     }
 }

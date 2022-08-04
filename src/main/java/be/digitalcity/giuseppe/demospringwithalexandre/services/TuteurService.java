@@ -6,7 +6,4 @@ import java.util.Collection;
 import java.util.Set;
 
 public interface TuteurService extends CrudService<Tuteur, Long>{
-
-    Set<Tuteur> getAllById(Collection<Long> ids);
-
 }

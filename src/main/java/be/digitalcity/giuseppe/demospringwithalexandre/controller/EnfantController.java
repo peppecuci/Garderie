@@ -1,15 +1,16 @@
 package be.digitalcity.giuseppe.demospringwithalexandre.controller;
 
-import be.digitalcity.giuseppe.demospringwithalexandre.forms.EnfantUpdateForm;
-import be.digitalcity.giuseppe.demospringwithalexandre.forms.TuteurForm;
+import be.digitalcity.giuseppe.demospringwithalexandre.model.forms.EnfantUpdateForm;
 import be.digitalcity.giuseppe.demospringwithalexandre.mapper.EnfantMapper;
 import be.digitalcity.giuseppe.demospringwithalexandre.model.dto.EnfantDTO;
 import be.digitalcity.giuseppe.demospringwithalexandre.model.entities.Enfant;
 import be.digitalcity.giuseppe.demospringwithalexandre.model.entities.Tuteur;
 import be.digitalcity.giuseppe.demospringwithalexandre.services.EnfantService;
 import be.digitalcity.giuseppe.demospringwithalexandre.services.TuteurService;
+import be.digitalcity.giuseppe.demospringwithalexandre.services.impl.TuteurServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -19,14 +20,15 @@ public class EnfantController {
 
     private final EnfantService service;
     private final EnfantMapper mapper;
-    private TuteurService tuteurService;
-    private TuteurForm tuteurForm;
+    private final TuteurService tuteurService;
 
 
 
-    public EnfantController(EnfantService service, EnfantMapper mapper) {
+
+    public EnfantController(EnfantService service, EnfantMapper mapper, TuteurService tuteurService, TuteurServiceImpl tuteurServiceimpl) {
         this.service = service;
         this.mapper = mapper;
+        this.tuteurService = tuteurService;
     }
 
     @GetMapping("/{id:[0-9]+}")
@@ -38,8 +40,13 @@ public class EnfantController {
 
     //INSERT
     @PostMapping
-    public EnfantDTO insert(@RequestBody EnfantUpdateForm enfantToInsert){
-        return mapper.toDto(service.create(mapper.toEntity(enfantToInsert)));
+    public EnfantDTO insert(@RequestBody EnfantUpdateForm form){
+        Enfant entity = mapper.toEntity(form);
+        Set<Tuteur> tuteurs = tuteurService.getAllById(form.getTuteursId());
+        entity.setTuteurs(tuteurs);
+        return mapper.toDto(service.create(entity));
+
+//        return mapper.toDto(service.create(mapper.toEntity(enfantToInsert)));
     }
 
     //GET ALL
@@ -51,8 +58,8 @@ public class EnfantController {
 
     //DELETE
     @DeleteMapping ("/delete/{id:[0-9]+}")
-    public Enfant delete(@PathVariable long id){
-        return service.delete(id);
+    public EnfantDTO delete(@PathVariable long id){
+        return mapper.toDto(service.delete(id));
     }
 
 
@@ -67,6 +74,14 @@ public class EnfantController {
 
     }
 
+    //TODO UPDATE BY PATCH (Possibilité de mettre à jour un seul parametre ou plusieurs jusqu'à la totalité des paramètres)
+    @PatchMapping("/{id}/{tuteurs}")
+    public EnfantDTO patchTuteurs(@PathVariable long id, @RequestBody Collection<Long> tuteursId){
 
+        Enfant enfant = service.getOne(id);
+        enfant.setTuteurs(tuteurService.getAllById(tuteursId));
+        return mapper.toDto(service.update(id, enfant));
+
+    }
 
 }

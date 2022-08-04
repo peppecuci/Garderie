@@ -1,6 +1,6 @@
 package be.digitalcity.giuseppe.demospringwithalexandre.mapper;
 
-import be.digitalcity.giuseppe.demospringwithalexandre.forms.TuteurForm;
+import be.digitalcity.giuseppe.demospringwithalexandre.model.forms.TuteurForm;
 import be.digitalcity.giuseppe.demospringwithalexandre.model.dto.TuteurDTO;
 import be.digitalcity.giuseppe.demospringwithalexandre.model.entities.Tuteur;
 import org.springframework.stereotype.Component;

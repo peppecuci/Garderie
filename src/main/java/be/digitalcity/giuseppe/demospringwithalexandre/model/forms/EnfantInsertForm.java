@@ -1,4 +1,4 @@
-package be.digitalcity.giuseppe.demospringwithalexandre.forms;
+package be.digitalcity.giuseppe.demospringwithalexandre.model.forms;
 
 
 import lombok.Builder;
@@ -21,6 +21,6 @@ public class EnfantInsertForm {
     @PastOrPresent
     private LocalDate dateDeNaissance;
     private boolean propre;
-    private Set<Long> setTuteursId;
+    private Set<Long> setTuteursId; // TODO remove clean
 
 }

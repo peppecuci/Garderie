@@ -1,27 +1,26 @@
 package be.digitalcity.giuseppe.demospringwithalexandre.services.impl;
 
-import be.digitalcity.giuseppe.demospringwithalexandre.forms.EnfantUpdateForm;
+import be.digitalcity.giuseppe.demospringwithalexandre.exceptions.ElementNotFoundException;
 import be.digitalcity.giuseppe.demospringwithalexandre.model.entities.Enfant;
+import be.digitalcity.giuseppe.demospringwithalexandre.model.entities.Tuteur;
 import be.digitalcity.giuseppe.demospringwithalexandre.repositories.EnfantRepository;
+import be.digitalcity.giuseppe.demospringwithalexandre.repositories.TuteurRepository;
 import be.digitalcity.giuseppe.demospringwithalexandre.services.EnfantService;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 @Primary
 public class EnfantServiceImpl implements EnfantService {
 
     private final EnfantRepository repository;
+    private final TuteurRepository tuteurRepository;
 
-    public EnfantServiceImpl(EnfantRepository repository) {
+    public EnfantServiceImpl(EnfantRepository repository, TuteurRepository tuteurRepository) {
         this.repository = repository;
+        this.tuteurRepository = tuteurRepository;
     }
 
     @Override
@@ -43,7 +42,7 @@ public class EnfantServiceImpl implements EnfantService {
             throw new IllegalArgumentException("params cannot be null");
 
         if(!repository.existsById(id))
-            throw new EntityNotFoundException();
+            throw new ElementNotFoundException(Enfant.class, id);
 
         toUpdate.setId(id);
 
@@ -51,9 +50,14 @@ public class EnfantServiceImpl implements EnfantService {
 
     }
 
+
     @Override
-    public Enfant getOne(long id) {
-        return repository.findById(id).orElseThrow(EntityNotFoundException::new);
+    public Enfant getOne(Long id) {
+        if( id == null )
+            throw new IllegalArgumentException("id cannot be null");
+
+        return repository.findById(id)
+                .orElseThrow( () -> new ElementNotFoundException(Enfant.class, id) );
     }
 
     @Override
@@ -63,13 +67,30 @@ public class EnfantServiceImpl implements EnfantService {
 
     @Override
     public Enfant delete(Long id) {
+
         Enfant enfant = getOne(id);
+
         repository.delete(enfant);
+
         return enfant;
     }
 
     @Override
     public Set<Enfant> getAllById(Collection<Long> ids) {
         return new HashSet<>(repository.findAllById(ids));
+    }
+
+    public Enfant updateTuteurs(Long id, Set<Tuteur> tuteurs){
+
+        Enfant enfant = repository.findById(id)
+                .orElseThrow();
+        enfant.setTuteurs(tuteurs);
+        return enfant;
+
+    }
+
+    @Override
+    public Enfant patchTuteurs(long id, Collection<Long> tuteursId) {
+        return null;
     }
 }

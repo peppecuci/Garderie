@@ -1,6 +1,7 @@
 package be.digitalcity.giuseppe.demospringwithalexandre.services;
 
 import be.digitalcity.giuseppe.demospringwithalexandre.model.entities.Enfant;
+import be.digitalcity.giuseppe.demospringwithalexandre.model.entities.Tuteur;
 
 import java.util.Collection;
 import java.util.List;
@@ -15,12 +16,14 @@ public interface CrudService<T, TID> {
     T  update(TID id, T toUpdate);
 
     //READ
-    T getOne(long id);
+    T getOne(TID id);
     List<T> getAll();
 
     //DELETE
     T delete(TID id);
 
     Set<T> getAllById(Collection<TID> ids);
+
+
 
 }
