@@ -5,6 +5,7 @@ import be.digitalcity.giuseppe.demospringwithalexandre.model.entities.Enfant;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -12,11 +13,25 @@ import java.util.Set;
 @Data
 public class EnfantUpdateForm {
 
+    @NotBlank
+    @Size(max = 255)
     private String firstName;
+
+    @NotBlank
+    @Size(max = 255)
     private String lastName;
+
+    @PastOrPresent
     private LocalDate dateDeNaissance;
-    private boolean propre;
+
+    @NotNull
+    private boolean propre = true;
+
+    @Size(max = 10)
+    @NotNull
     private List<String> allergies;
+
+    @NotNull
     private Set<Long> tuteursId;
 
 //

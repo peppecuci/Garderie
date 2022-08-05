@@ -41,19 +41,19 @@ public class EnfantMapper {
                 .build();
     }
 
-//    public Enfant toEntity(EnfantInsertForm form){
-//
-//        if(form == null)
-//            return null;
-//
-//        Enfant enfant = new Enfant();
-//        enfant.setFirstName(form.getFirstName());
-//        enfant.setLastName(form.getLastName());
-//        enfant.setDateDeNaissance(form.getDateDeNaissance());
-//        enfant.setPropre(form.isPropre());
-//
-//        return enfant;
-//    }
+    public Enfant toEntity(EnfantInsertForm form){
+
+        if(form == null)
+            return null;
+
+        Enfant enfant = new Enfant();
+        enfant.setFirstName(form.getFirstName());
+        enfant.setLastName(form.getLastName());
+        enfant.setDateDeNaissance(form.getDateDeNaissance());
+        enfant.setPropre(form.isPropre());
+
+        return enfant;
+    }
 
     //Il est à remarquer qu'on ne mappe pas l'id ou les tuteurs
     public Enfant toEntity(EnfantUpdateForm form){

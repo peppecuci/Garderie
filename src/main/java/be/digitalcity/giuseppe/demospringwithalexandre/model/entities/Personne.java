@@ -16,6 +16,7 @@ public abstract class Personne {
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
+
     @Column(nullable = false)
     private String firstName;
 

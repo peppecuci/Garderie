@@ -5,10 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.Set;
 
 @Entity
@@ -21,9 +18,12 @@ public class Tuteur extends Personne{
     @Column(nullable = false)
     private String numTel;
 
-    @Column(nullable = false)
-    private String adresse;
+    @ManyToOne
+    @JoinColumn(name = "adresseId")
+    private Adresse adresse;
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "tuteurs")
     private Set<Enfant> enfants;
+
+
 }

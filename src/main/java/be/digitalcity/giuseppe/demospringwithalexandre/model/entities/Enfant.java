@@ -23,7 +23,7 @@ public class Enfant extends Personne {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> allergies;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "tutorat", joinColumns = @JoinColumn(name = "enfant°id"),
     inverseJoinColumns = @JoinColumn(name = "tuteur_id"))
     private Set<Tuteur> tuteurs = new HashSet<>();

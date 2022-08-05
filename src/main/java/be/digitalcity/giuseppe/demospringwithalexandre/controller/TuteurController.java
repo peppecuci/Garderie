@@ -9,6 +9,7 @@ import be.digitalcity.giuseppe.demospringwithalexandre.model.entities.Tuteur;
 import be.digitalcity.giuseppe.demospringwithalexandre.services.TuteurService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequestMapping("/tuteur")
@@ -24,31 +25,30 @@ public class TuteurController {
         this.mapper = mapper;
     }
 
-    //CHECKED
+
     @GetMapping("/{id:[0-9]+}")
     public TuteurDTO getOne(@PathVariable long id){
 
-        return mapper.toDto(service.getOne(id));
+        return service.getOne(id);
 
     }
 
 
     @PostMapping
-    public TuteurDTO insert(@RequestBody TuteurForm form){
-        return mapper.toDto(service.create(mapper.toEntity(form)));
+    public TuteurDTO insert(@Valid @RequestBody TuteurForm form){
+        return service.create(form);
     }
 
 
     @GetMapping
     public List<TuteurDTO> getAll(){
-        return service.getAll().stream().map(mapper::toDto)
-                .toList();
+        return service.getAll();
     }
 
 
     @DeleteMapping("/delete/{id:[0-9]+}")
     public TuteurDTO delete(@PathVariable long id){
-        return mapper.toDto(service.delete(id));
+        return service.delete(id);
     }
 
 
@@ -56,10 +56,10 @@ public class TuteurController {
     @PutMapping("/{id}")
     public TuteurDTO update(@PathVariable long id, @RequestBody (required = false) TuteurForm form){
 
-            Tuteur entity = mapper.toEntity(form);
-            entity.setId(id);
-            return mapper.toDto(service.update(id, entity));
+            return service.update(id, form);
 
     }
+
+
 
 }

@@ -26,7 +26,7 @@ public class TuteurMapper {
                 .firstName(entity.getFirstName())
                 .lastName(entity.getLastName())
                 .numTel(entity.getNumTel())
-                .adresse(entity.getAdresse())
+                .adresse(entity.getAdresse().toString())
                 .enfants(enfants)
                 .build();
     }
