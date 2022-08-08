@@ -21,16 +21,16 @@ import java.util.Set;
 public class EnfantController {
 
     private final EnfantService service;
-    private final EnfantMapper mapper;
-    private final TuteurService tuteurService;
+//    private final EnfantMapper mapper;
+//    private final TuteurService tuteurService;
 
 
 
 
     public EnfantController(EnfantService service, EnfantMapper mapper, TuteurService tuteurService, TuteurServiceImpl tuteurServiceimpl) {
         this.service = service;
-        this.mapper = mapper;
-        this.tuteurService = tuteurService;
+//        this.mapper = mapper;
+//        this.tuteurService = tuteurService;
     }
 
     @GetMapping("/{id:[0-9]+}")
