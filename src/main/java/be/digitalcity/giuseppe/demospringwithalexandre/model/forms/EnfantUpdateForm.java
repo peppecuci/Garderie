@@ -7,6 +7,7 @@ import lombok.Data;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -32,7 +33,7 @@ public class EnfantUpdateForm {
     private List<String> allergies;
 
     @NotNull
-    private Set<Long> tuteursId;
+    private Set<Long> tuteursId = new HashSet<>();
 
 //
 //    public Enfant toEntity(){

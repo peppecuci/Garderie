@@ -40,6 +40,12 @@ public class EnfantController {
 
     }
 
+    //GET ALL
+    @GetMapping
+    public List<EnfantDTO> getAll(){
+        return service.getAll();
+    }
+
     //INSERT
     @PostMapping
     public EnfantDTO insert(@Valid @RequestBody EnfantInsertForm form){
@@ -48,11 +54,6 @@ public class EnfantController {
 
     }
 
-    //GET ALL
-    @GetMapping
-    public List<EnfantDTO> getAll(){
-        return service.getAll();
-    }
 
     //DELETE
     @DeleteMapping ("/delete/{id:[0-9]+}")
@@ -73,11 +74,14 @@ public class EnfantController {
 
 
     //TODO UPDATE BY PATCH (Possibilité de mettre à jour un seul parametre ou plusieurs jusqu'à la totalité des paramètres)
-    @PatchMapping("/{id}/{tuteurs}")
-    public EnfantDTO patchTuteurs(@PathVariable long id, @RequestBody Collection<Long> tuteursId){
+    @PatchMapping("/{id:[0-9]+}")
+    public EnfantDTO patchTuteurs(@PathVariable long id, @Valid @RequestBody Collection<Long> tuteurIds){
+        return service.patchTuteurs(id, tuteurIds);
+    }
 
-        return service.patchTuteurs(id, tuteursId);
-
+    @GetMapping(value = "/allergie")
+    public List<EnfantDTO> getAllWithAllergie(@RequestParam String allergie){
+        return service.getAllWithAllergie(allergie);
     }
 
 }

@@ -3,6 +3,7 @@ package be.digitalcity.giuseppe.demospringwithalexandre.model.forms;
 import be.digitalcity.giuseppe.demospringwithalexandre.model.entities.Adresse;
 import lombok.Data;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -19,11 +20,13 @@ public class TuteurForm {
     @Size(max = 255)
     private String lastName;
 
+    @Valid
     @NotNull
-    @Pattern(regexp = "[0-9]{3,4}\\/[0-9]{2}\\.[0-9]{2}\\.[0-9]{2}")
+    private Adresse adresse;
+
+    @NotNull
+    @Pattern(regexp = "^(((\\+|00)32[ ]?(?:\\(0\\)[ ]?)?)|0){1}(4(60|[789]\\d)\\/?(\\s?\\d{2}\\.?){2}(\\s?\\d{2})|(\\d\\/?\\s?\\d{3}|\\d{2}\\/?\\s?\\d{2})(\\.?\\s?\\d{2}){2})$")
     private String numTel;
 
-
-    private Adresse adresse;
 
 }

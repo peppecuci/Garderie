@@ -1,6 +1,7 @@
 package be.digitalcity.giuseppe.demospringwithalexandre.controller;
 
 import be.digitalcity.giuseppe.demospringwithalexandre.exceptions.ElementNotFoundException;
+import be.digitalcity.giuseppe.demospringwithalexandre.exceptions.FormValidationException;
 import be.digitalcity.giuseppe.demospringwithalexandre.exceptions.TuteurNotDeletableException;
 import be.digitalcity.giuseppe.demospringwithalexandre.exceptions.TuteurNotExistingException;
 import be.digitalcity.giuseppe.demospringwithalexandre.model.dto.ErrorDTO;
@@ -58,8 +59,23 @@ public class ControllerAdvisor {
                                 .status( 422 )
                                 .method( HttpMethod.resolve(request.getMethod()) )
                                 .path( request.getRequestURL().toString() )
-                                .build());
+                                .build()
+                );
     }
 
+    @ExceptionHandler(FormValidationException.class)
+    public ResponseEntity<ErrorDTO> handleException(FormValidationException ex, HttpServletRequest req){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(
+                        ErrorDTO.builder()
+                                .message(ex.getMessage())
+                                .receivedAt( LocalDateTime.now() )
+                                .status( 400 )
+                                .method( HttpMethod.resolve(req.getMethod()) )
+                                .path( req.getRequestURL().toString() )
+                                .build()
+                                .addInfo("errors", ex.getMessages())
+                );
+    }
 
 }

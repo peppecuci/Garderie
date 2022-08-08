@@ -12,4 +12,6 @@ public interface EnfantService extends  CrudService<EnfantDTO, Long, EnfantInser
 
     EnfantDTO patchTuteurs(long id, Collection<Long> tuteursId);
 
+    List<EnfantDTO> getAllWithAllergie(String allergie);
+
 }

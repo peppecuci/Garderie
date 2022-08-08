@@ -33,18 +33,15 @@ public class TuteurController {
 
     }
 
-
-    @PostMapping
-    public TuteurDTO insert(@Valid @RequestBody TuteurForm form){
-        return service.create(form);
-    }
-
-
     @GetMapping
     public List<TuteurDTO> getAll(){
         return service.getAll();
     }
 
+    @PostMapping
+    public TuteurDTO insert(@Valid @RequestBody TuteurForm form){
+        return service.create(form);
+    }
 
     @DeleteMapping("/delete/{id:[0-9]+}")
     public TuteurDTO delete(@PathVariable long id){
@@ -58,6 +55,11 @@ public class TuteurController {
 
             return service.update(id, form);
 
+    }
+
+    @GetMapping(params = "ville")
+    public List<TuteurDTO> getAllFromVille(@RequestParam String ville){
+        return service.getAllFromVilleWithChild(ville);
     }
 
 

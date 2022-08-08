@@ -13,17 +13,13 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter @Setter
+@NoArgsConstructor
 public class Adresse {
 
     @Id
-    private int id;
-
-    @Positive
-    @NotNull
+    private Long id;
     private int nbr;
-
-    @NotBlank
     private String street;
     private int zip;
     private String city;

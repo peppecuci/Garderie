@@ -1,6 +1,7 @@
 package be.digitalcity.giuseppe.demospringwithalexandre.services.impl;
 
 import be.digitalcity.giuseppe.demospringwithalexandre.exceptions.ElementNotFoundException;
+import be.digitalcity.giuseppe.demospringwithalexandre.exceptions.FormValidationException;
 import be.digitalcity.giuseppe.demospringwithalexandre.exceptions.TuteurNotExistingException;
 import be.digitalcity.giuseppe.demospringwithalexandre.mapper.EnfantMapper;
 import be.digitalcity.giuseppe.demospringwithalexandre.model.dto.EnfantDTO;
@@ -13,6 +14,8 @@ import be.digitalcity.giuseppe.demospringwithalexandre.repositories.TuteurReposi
 import be.digitalcity.giuseppe.demospringwithalexandre.services.EnfantService;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import javax.transaction.Transactional;
 import java.util.*;
@@ -51,8 +54,25 @@ public class EnfantServiceImpl implements EnfantService {
         if (!repository.existsById(id))
             throw new ElementNotFoundException(Enfant.class, id);
 
+        MultiValueMap<String, String> validationErrors = null;
+
+        if(toUpdate.getAllergies().stream()
+                .anyMatch( (allergie) -> allergie == null || allergie.isBlank() || allergie.isEmpty())) {
+            validationErrors = new LinkedMultiValueMap<>();
+            validationErrors.add("allergies", "certaines allergies sont invalides");
+        }
+
         Enfant enfant = mapper.toEntity(toUpdate);
         List<Tuteur> tuteurs = tuteurRepository.findAllById(toUpdate.getTuteursId());
+
+        if( tuteurs.size() < toUpdate.getTuteursId().size() ){
+            validationErrors = validationErrors == null ? new LinkedMultiValueMap<>() : validationErrors;
+            validationErrors.add("tuteurs", "certains id ne menent pas à un tuteur");
+        }
+
+        if( validationErrors != null )
+            throw new FormValidationException(validationErrors);
+
         enfant.setTuteurs(new HashSet<>(tuteurs));
         enfant.setId(id);
 
@@ -100,15 +120,6 @@ public class EnfantServiceImpl implements EnfantService {
 
     }
 
-    public Enfant updateTuteurs(Long id, Set<Tuteur> tuteurs) {
-
-        Enfant enfant = repository.findById(id)
-                .orElseThrow();
-        enfant.setTuteurs(tuteurs);
-        return enfant;
-
-    }
-
 
     //METHODE POUR MODIFIER LES TUTEURS D'UN ENFANT
     @Override
@@ -134,4 +145,12 @@ public class EnfantServiceImpl implements EnfantService {
         return mapper.toDto(repository.save(enfant));
 
     }
+
+    @Override
+    public List<EnfantDTO> getAllWithAllergie(String allergie) {
+        return repository.findByAllergiesContaining(allergie).stream()
+                .map(mapper::toDto)
+                .toList();
+    }
+
 }
