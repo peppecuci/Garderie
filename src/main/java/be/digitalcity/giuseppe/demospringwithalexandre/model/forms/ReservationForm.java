@@ -1,5 +1,6 @@
 package be.digitalcity.giuseppe.demospringwithalexandre.model.forms;
 
+import be.digitalcity.giuseppe.demospringwithalexandre.model.entities.Enfant;
 import lombok.Data;
 
 import javax.validation.constraints.AssertTrue;
@@ -23,5 +24,7 @@ public class ReservationForm {
     private boolean isCancelled;
 
     private String reason;
+
+    private Long enfantId;
 
 }

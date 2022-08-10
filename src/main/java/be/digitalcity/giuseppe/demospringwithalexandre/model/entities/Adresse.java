@@ -2,10 +2,7 @@ package be.digitalcity.giuseppe.demospringwithalexandre.model.entities;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -18,6 +15,7 @@ import java.util.Set;
 public class Adresse {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int nbr;
     private String street;

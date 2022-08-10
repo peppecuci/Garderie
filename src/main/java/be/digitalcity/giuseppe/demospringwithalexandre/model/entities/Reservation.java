@@ -32,4 +32,9 @@ public class Reservation {
     @ManyToOne
     private Tuteur tuteur;
 
+    @ManyToOne
+    private Enfant enfant;
+
+    private int availability = 2;
+
 }

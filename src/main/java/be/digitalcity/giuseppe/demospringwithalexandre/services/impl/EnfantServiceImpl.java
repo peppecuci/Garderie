@@ -41,7 +41,11 @@ public class EnfantServiceImpl implements EnfantService {
         if (toInsert == null)
             throw new IllegalArgumentException("inserted child cannot be null");
 
-        return mapper.toDto(repository.save(mapper.toEntity(toInsert)));
+        Enfant enfant = mapper.toEntity(toInsert);
+        List<Tuteur> tuteurs = tuteurRepository.findAllById(toInsert.getTuteursId());
+        enfant.setTuteurs(new HashSet<>(tuteurs));
+
+        return mapper.toDto(repository.save(enfant));
 
     }
 

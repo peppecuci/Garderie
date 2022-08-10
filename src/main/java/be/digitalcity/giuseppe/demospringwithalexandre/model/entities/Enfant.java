@@ -28,16 +28,7 @@ public class Enfant extends Personne {
     inverseJoinColumns = @JoinColumn(name = "tuteur_id"))
     private Set<Tuteur> tuteurs = new HashSet<>();
 
-    public Enfant(LocalDate dateDeNaissance, boolean propre) {
-        this.dateDeNaissance = dateDeNaissance;
-        this.propre = propre;
+    @OneToMany
+    private List<Reservation> reservation;
 
-    }
-
-    public Enfant(String firstName, String lastName, LocalDate dateDeNaissance, boolean propre, List<String> allergies) {
-        super(firstName, lastName);
-        this.dateDeNaissance = dateDeNaissance;
-        this.propre = propre;
-        this.allergies = allergies;
-    }
 }
