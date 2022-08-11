@@ -23,5 +23,6 @@ public interface ReservationService{
 
     List<ReservationDTO> getAllByCheckInHourAfter(LocalDateTime dateTime, Long id);
 
-    public List<ReservationDTO> getAllRemainingReservationOfTheCurrentMonth(Month month);
+    List<ReservationDTO> findReservationsByCurrentMonth();
+
 }

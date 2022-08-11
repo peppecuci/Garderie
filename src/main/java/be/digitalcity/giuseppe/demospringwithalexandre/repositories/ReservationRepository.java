@@ -24,8 +24,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Query("SELECT r FROM Reservation r WHERE r.checkInHour > CURRENT_DATE AND r.enfant.id = ?1")
     List<Reservation> getAllByCheckInHourAfter(Long id);
 
-    @Query("SELECT r FROM Reservation r WHERE MONTH(r.checkInHour) = ?1")
-    List<Reservation> getAllRemainingReservationOfTheCurrentMonth(Month dateEndOfMonth);
+    @Query("SELECT r FROM Reservation r WHERE MONTH(CURRENT_DATE) = MONTH(r.checkInHour) AND r.checkInHour >= current_date AND r.isCancelled = false")
+    List<Reservation> findReservationsByCurrentMonth();
 
 
 }

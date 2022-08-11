@@ -94,15 +94,21 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public List<ReservationDTO> getAllByCheckInHourAfter(LocalDateTime dateTime, Long id){
 
-        return repository.getAllByCheckInHourAfter(id).stream().map(mapper::toDto).collect(Collectors.toList());
+        return repository.getAllByCheckInHourAfter(id)
+                .stream()
+                .map(mapper::toDto)
+                .distinct() //methode pour ne pas accepter de doublons
+                .collect(Collectors.toList());
 
     }
 
-    @Override
-    public List<ReservationDTO> getAllRemainingReservationOfTheCurrentMonth(Month month) {
 
-        month = LocalDateTime.now().getMonth();
-        return repository.getAllRemainingReservationOfTheCurrentMonth(month).stream().map(mapper::toDto).collect(Collectors.toList());
+    public List<ReservationDTO> findReservationsByCurrentMonth(){
+
+        return repository.findReservationsByCurrentMonth()
+                .stream()
+                .map(mapper::toDto)
+                .collect(Collectors.toList());
 
     }
 

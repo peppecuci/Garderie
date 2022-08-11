@@ -63,10 +63,10 @@ public class ReservationController {
 
     }
 
-    @GetMapping("/child_by_reservation_date")
-    public List<EnfantDTO> getAllEnfantByDate(@RequestParam @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate checkInHour){
+    @GetMapping(value = "/child_by_reservation_date", params = "date")
+    public List<EnfantDTO> getAllEnfantByDate(@RequestParam @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date){
 
-        return service.getAllEnfantByDate(checkInHour.atStartOfDay());
+        return service.getAllEnfantByDate(date.atStartOfDay());
 
     }
 
@@ -80,7 +80,7 @@ public class ReservationController {
     @GetMapping("/remaining_of_the_month")
     public List<ReservationDTO> getAllRemainingReservationOfTheCurrentMonth(){
 
-        return service.getAllRemainingReservationOfTheCurrentMonth(LocalDate.now().getMonth());
+        return service.findReservationsByCurrentMonth();
 
     }
 
