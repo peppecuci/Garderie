@@ -13,7 +13,7 @@ import java.util.Set;
 @Builder
 public class TuteurDTO {
 
-    private long id;
+    private Long id;
     private String firstName;
     private String lastName;
     private String numTel;

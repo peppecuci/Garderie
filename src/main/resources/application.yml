@@ -1,5 +1,7 @@
 server:
   port: 8080
+  servlet:
+
 
 spring:
   datasource:
@@ -11,10 +13,23 @@ spring:
     user:
       name: user
       password: pass
-      roles: USER
+      roles:
+      - USER
+      - ADMIN
+      - VISITOR
+      - TUTEUR
+
+application:
+  jwt:
+    expiresAt: 846_000
+    headerPrefix: "Bearer"
+    secret: "ciao"
+    headerKey: "Authorization"
+
 
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: create
+
 

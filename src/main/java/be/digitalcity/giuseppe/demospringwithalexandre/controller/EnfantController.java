@@ -73,7 +73,6 @@ public class EnfantController {
     }
 
 
-    //TODO UPDATE BY PATCH (Possibilité de mettre à jour un seul parametre ou plusieurs jusqu'à la totalité des paramètres)
     @PatchMapping("/{id:[0-9]+}")
     public EnfantDTO patchTuteurs(@PathVariable long id, @Valid @RequestBody Collection<Long> tuteurIds){
         return service.patchTuteurs(id, tuteurIds);
