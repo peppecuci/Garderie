@@ -44,6 +44,7 @@ import java.util.List;
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //emepche de creer des cookies
 
         http.authorizeRequests()
+                .antMatchers("/swagger-ui/**").permitAll()
                 .antMatchers("/security/test/all").permitAll()
                 .antMatchers("/security/test/nobody").denyAll()
                 .antMatchers("/security/test/connected").authenticated()
@@ -99,5 +100,7 @@ import java.util.List;
 //                )
 //        );
 //    }
+
+
 
 }
