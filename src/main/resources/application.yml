@@ -1,7 +1,5 @@
 server:
   port: 8080
-  servlet:
-
 
 spring:
   datasource:
@@ -9,15 +7,11 @@ spring:
     username: postgres
     password: pass
     driver-class-name: org.postgresql.Driver
-  security:
-    user:
-      name: user
-      password: pass
-      roles:
-      - USER
-      - ADMIN
-      - VISITOR
-      - TUTEUR
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
 
 application:
   jwt:
@@ -25,12 +19,3 @@ application:
     headerPrefix: "Bearer"
     secret: "ciao"
     headerKey: "Authorization"
-
-
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: create
-
-
-
