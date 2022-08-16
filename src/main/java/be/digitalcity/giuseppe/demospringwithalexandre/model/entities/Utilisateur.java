@@ -25,7 +25,7 @@ public class Utilisateur implements UserDetails {
 
     private String username;
     private String password;
-    private boolean enabled;
+    private boolean enabled = true;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles;
@@ -49,6 +49,8 @@ public class Utilisateur implements UserDetails {
     public boolean isCredentialsNonExpired() {
         return true;
     }
+
+
 
 
 }
